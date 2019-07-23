@@ -1,0 +1,8 @@
+[all_servers]
+yourhos01
+yourhos02
+yourhos03
+yourhos04
+
+[all_servers:vars]
+ansible_python_interpreter=/usr/bin/python3
