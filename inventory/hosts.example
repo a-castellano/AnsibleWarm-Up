@@ -6,3 +6,17 @@ test04
 
 [all_servers:vars]
 ansible_python_interpreter=/usr/bin/python3
+
+[app]
+test01
+test02
+
+[db]
+test03
+
+[multi:children]
+app
+db
+
+[multi:vars]
+ansible_python_interpreter=/usr/bin/python3
