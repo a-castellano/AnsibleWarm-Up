@@ -1,0 +1,23 @@
+---
+- hosts: web
+  become: yes
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+      when: ansible_os_family == 'Debian'
+
+  tasks:
+  - import_tasks: user.yml
+
+    vars:
+      username: johndoe
+      ssh_private_keys:
+        - { src: keys/johnkey1, dest: id_rsa }
+        - { src: keys/johnkey2, dest: id_rsa_2 }
+  - import_tasks: user.yml
+    vars:
+      username: janedoe
+      ssh_private_keys:
+        - { src: keys/janekey1, dest: id_rsa }
+        - { src: keys/janekey1, dest: id_rsa_2 }
