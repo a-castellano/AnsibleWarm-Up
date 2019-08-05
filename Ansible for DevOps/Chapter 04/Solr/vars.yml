@@ -1,0 +1,5 @@
+---
+solr_version: 6.5.1
+solr_dir: /opt/solr
+solr_checksum: sha1:2cc43b837743949a46bd7efbab14b43f6d92b4b8
+download_dir: /tmp

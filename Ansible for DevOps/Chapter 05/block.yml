@@ -1,0 +1,32 @@
+---
+- hosts: web
+  become: yes
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+      when: ansible_os_family == 'Debian'
+
+  tasks:
+    # Install and configure Apache on RHEL/CentOS hosts.
+    - block:
+        - yum: name=httpd state=present
+        - template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
+        - service: name=httpd state=started enabled=yes
+      when: ansible_os_family == 'RedHat'
+    # Install and configure Apache on Debian/Ubuntu hosts.
+    - block:
+        - apt: name=apache2 state=present
+        - template: src=httpd.conf.j2 dest=/etc/apache2/apache2.conf
+        - service: name=apache2 state=started enabled=yes
+      when: ansible_os_family == 'Debian'
+
+    - block:
+        - name: Script to connect the app to a monitoring service.
+          script: monitoring-connect.sh
+      rescue:
+        - name: This will only run in case of an error in the block.
+          debug: msg="There was an error in the block."
+      always:
+        - name: This will always run, no matter what.
+          debug: msg="This always executes."
