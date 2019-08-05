@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+    - debug: var=ansible_ens3['ipv4']['address']
+    - debug: var=api_key
