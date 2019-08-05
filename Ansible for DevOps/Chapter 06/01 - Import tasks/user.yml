@@ -1,0 +1,25 @@
+---
+- name: Add profile info for user.
+  copy:
+    src: files/example_profile
+    dest: "/home/{{ username }}/.profile"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0744
+
+- name: Ensure user's .ssh folder is present.
+  file:
+    state: directory
+    path: "/home/{{ username }}/.ssh"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0744
+
+- name: Add private keys for user.
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ username }}/.ssh/{{ item.dest }}"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0600
+  with_items: "{{ ssh_private_keys }}"
